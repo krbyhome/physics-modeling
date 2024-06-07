@@ -5,15 +5,19 @@ import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
 
 def equations(t, y, L, m, k, L1, beta, g):
-    phi1, omega1, phi2, omega2 = y
-    
-    dphi1_dt = omega1
-    domega1_dt = (-m * g * L * np.sin(phi1) - beta * L * omega1 + k * L1 * (np.sin(phi2) - np.sin(phi1)) ) / (m * L**2)
+    theta_1, omega_1, theta_2, omega_2 = y
+    gravitational_force = m * g
+    elastic_force = k * L1 * (np.sin(theta_2) - np.sin(theta_1))
 
-    dphi2_dt = omega2
-    domega2_dt = (-m * g * L * np.sin(phi2) - beta * L * omega2 - k * L1 * (np.sin(phi2) - np.sin(phi1)) ) / (m * L**2)
-    
-    return [dphi1_dt, domega1_dt, dphi2_dt, domega2_dt]
+    temp = theta_1
+    theta_1 = omega_1
+    omega_1 = (-gravitational_force * L * np.sin(temp) - beta * L * theta_1 + L1 * elastic_force * np.cos(temp)) / (m * L ** 2)
+
+    temp = theta_2
+    theta_2 = omega_2
+    omega_2 = (-gravitational_force * L * np.sin(temp) - beta * L * theta_2 - L1 * elastic_force * np.cos(temp)) / (m * L ** 2)
+
+    return theta_1, omega_1, theta_2, omega_2
 
 def run_simulation():
     L = float(entry_L.get())
