@@ -8,10 +8,10 @@ def equations(t, y, L, m, k, L1, beta, g):
     phi1, omega1, phi2, omega2 = y
     
     dphi1_dt = omega1
-    domega1_dt = (-m * g * L * np.sin(phi1) - beta * L * omega1 + k * L1 * np.sin(phi2 - phi1)) / (m * L**2)
+    domega1_dt = (-m * g * L * np.sin(phi1) - beta * L * omega1 + k * L1 * (np.sin(phi2) - np.sin(phi1)) ) / (m * L**2)
 
     dphi2_dt = omega2
-    domega2_dt = (-m * g * L * np.sin(phi2) - beta * L * omega2 - k * L1 * np.sin(phi2 - phi1)) / (m * L**2)
+    domega2_dt = (-m * g * L * np.sin(phi2) - beta * L * omega2 - k * L1 * (np.sin(phi2) - np.sin(phi1)) ) / (m * L**2)
     
     return [dphi1_dt, domega1_dt, dphi2_dt, domega2_dt]
 
